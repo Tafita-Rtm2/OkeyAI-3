@@ -29,21 +29,12 @@ const ContextProvider = ({ children }) => {
       // Show typing message while waiting for response
       setMessages((prevMessages) => [...prevMessages, { role: "bot", text: <Loading /> }]);
 
-      // Send user message to the Gemini API
-
+      // Send user message to the API
       const text = await runChat(prompt);
 
-      let responseArr = text.split("**");
-      let modifiedResponse = "";
-
-      for (let i = 0; i < responseArr.length; i++) {
-        if (i === 0 || i % 2 !== 1) {
-          modifiedResponse += responseArr[i];
-        } else {
-          modifiedResponse += "<strong class='font-semibold'>" + responseArr[i] + "</strong>";
-        }
-      }
-      let newResponse = modifiedResponse.split("*").join("</br>");
+      // Replace \n with <br/> for HTML rendering.
+      // The old logic for ** and * based formatting is removed as the new API provides plain text with \n.
+      let newResponse = text.replace(/\n/g, "<br/>");
 
       // Remove typing message
       setMessages((prevMessages) => prevMessages.slice(0, -1));
@@ -70,12 +61,6 @@ const ContextProvider = ({ children }) => {
       setInput("");
     }
   };
-
-
-
-  
-  
-  
 
   const contextValue = {
     handleSend,

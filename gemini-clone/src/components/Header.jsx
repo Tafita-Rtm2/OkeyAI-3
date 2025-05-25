@@ -1,4 +1,3 @@
-import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
 import React, { useContext } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -37,7 +36,7 @@ const Header = () => {
             role="button"
             className="btn btn-ghost text-gray-300 font-normal text-xl"
           >
-            Gemini
+            RTM AI
             <svg
               className="w-4 h-4 mt-1 !text-gray-300"
               fill="#d1d5db"
@@ -63,8 +62,7 @@ const Header = () => {
           >
             <div className="flex gap-3 justify-between items-center p-3">
               <div className="flex gap-3 items-center">
-                <img src="/google-gemini-icon.svg" className="w-6 h-6" alt="" />
-                <p className="text-gray-300">Gemini</p>
+                <p className="text-gray-300">RTM AI</p>
               </div>
 
               {!isSubscribed ? (
@@ -76,8 +74,8 @@ const Header = () => {
             </div>
             <div className="flex gap-3 items-center p-3 justify-between">
              <div className="flex gap-3 items-center">
-             <img src="/gemini-advanced.svg" className="w-6 h-6" alt="" />
-              <p className="text-gray-300">Gemini Advanced</p>
+             <img src="/gemini-advanced.svg" className="w-6 h-6" alt="RTM AI Advanced icon" /> {/* Updated alt text if necessary */}
+              <p className="text-gray-300">RTM AI Advanced</p>
              </div>
               {isSubscribed ? (
                 <FaCheckCircle size={20} className="text-green-500" />
@@ -91,16 +89,7 @@ const Header = () => {
         </div>
       </div>
 
-      <SignedOut>
-        <Link to="/sign-in" className="btn">
-          {" "}
-          Sign In{" "}
-        </Link>
-      </SignedOut>
-
-      <SignedIn>
-        <UserButton afterSignOutUrl="/sign-in" />
-      </SignedIn>
+      {/* ClerkJS SignedIn and SignedOut components were removed here as part of auth cleanup */}
     </div>
   );
 };

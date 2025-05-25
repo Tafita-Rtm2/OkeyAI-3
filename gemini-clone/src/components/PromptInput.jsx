@@ -53,8 +53,8 @@ const PromptInput = () => {
       </div>
 
       <p className="text-gray-300 mt-3 text-xs text-center">
-        Gemini may display inaccurate info, including about people, so double-check its responses.
-        <span className="text-blue-500 underline"> Your privacy and Gemini Apps</span>
+        RTM AI may display inaccurate info, including about people, so double-check its responses.
+        <span className="text-blue-500 underline"> Your privacy and RTM AI Apps</span>
       </p>
     </section>
   );

@@ -1,50 +1,26 @@
-// node --version # Should be >= 18
-// npm install @google/generative-ai
+// New API endpoint and parameters
+const API_BASE_URL = "https://kaiz-apis.gleeze.com/api/gpt-4o-pro";
+const API_KEY = "793fcf57-8820-40ea-b34e-7addd227e2e6";
+const UID = "1"; // Static UID
 
-import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
+async function runChat(prompt, imageUrl = "") {
+  // Construct the API URL with query parameters
+  const apiUrl = `${API_BASE_URL}?ask=${encodeURIComponent(prompt)}&uid=${UID}&imageUrl=${encodeURIComponent(imageUrl)}&apikey=${API_KEY}`;
 
-const MODEL_NAME = "gemini-1.0-pro";
-const API_KEY = "AIzaSyBrLBVavqMAb5HweYh_slRTwL11bdUbz8w";
-
-async function runChat(prompt) {
-  const genAI = new GoogleGenerativeAI(API_KEY);
-  const model = genAI.getGenerativeModel({ model: MODEL_NAME });
-
-  const generationConfig = {
-    temperature: 0.9,
-    topK: 1,
-    topP: 1,
-    maxOutputTokens: 2048,
-  };
-
-  const safetySettings = [
-    {
-      category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-  ];
-
-  const chat = model.startChat({
-    generationConfig,
-    safetySettings,
-    history: [],
-  });
-
-  const result = await chat.sendMessage(prompt);
-  const response = result.response;
-  return response.text();
+  try {
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
+    }
+    const data = await response.json();
+    // The API returns a JSON like: { "author": "Kaizenji", "response": "Hello! 😊 \nকেমন আছো? ..." }
+    // Return the 'response' field.
+    return data.response;
+  } catch (error) {
+    console.error("Failed to fetch from API:", error);
+    // Return a generic error message or rethrow, depending on desired error handling
+    return "Sorry, I couldn't get a response. Please try again.";
+  }
 }
 
 export default runChat;
